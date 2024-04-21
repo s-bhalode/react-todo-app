@@ -1,24 +1,44 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import {Paper} from '@mui/material';
+import TodoInput from './component/todoInput';
 import './App.css';
+import TodolistComponent from './component/todolistComponent';
 
 function App() {
+
+  const [listTodo, setListTodo] = useState([]);
+
+  const addList = (inputText) => {
+    if(inputText !== ''){
+      setListTodo([...listTodo, inputText]);
+    }
+  }
+
+  const deleteListItem = (index) => {
+    let newListTodo = [...listTodo];
+    newListTodo.splice(index, 1);
+    setListTodo([...newListTodo]);
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className='container'>
+        <Paper className='todo-container'>
+          <h1 style={{textAlign:'center'}}>Todo App</h1>
+
+          {/* input component */}
+          <TodoInput addList={addList} />
+
+          {listTodo.map((listItem, index) => {
+            return (
+              <TodolistComponent key={index} item={listItem} deleteListItem={deleteListItem} />
+            )
+          })}
+
+        </Paper>
+      </div>
+    </>
   );
 }
 
